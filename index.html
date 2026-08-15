@@ -1,109 +1,389 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KicksVault Retailers | Urban Streetwear & Sneakers</title>
-    <!-- Link to external stylesheet -->
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KicksVault | SA's Premier Sneaker Destination</title>
+  <style>
+    :root {
+      --primary: #111111;
+      --accent: #ff3e3e;
+      --bg: #0d0d0d;
+      --card-bg: #1a1a1a;
+      --text: #ffffff;
+      --text-muted: #aaaaaa;
+      --border: #2a2a2a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    nav {
+      background-color: var(--primary);
+      border-bottom: 2px solid var(--accent);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo { font-size: 1.8rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; color: var(--text); }
+    .logo span { color: var(--accent); }
+
+    nav ul { display: flex; list-style: none; gap: 20px; }
+
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      transition: color 0.2s ease;
+    }
+
+    nav a:hover, nav a.active { color: var(--accent); }
+
+    .cart-btn-nav {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cart-badge { background: #fff; color: var(--primary); border-radius: 50%; padding: 2px 7px; font-size: 0.8rem; }
+
+    header {
+      text-align: center;
+      padding: 50px 20px 30px;
+      background: linear-gradient(180deg, #161616 0%, var(--bg) 100%);
+    }
+
+    header h1 { font-size: 2.8rem; text-transform: uppercase; letter-spacing: 2px; }
+    header p { color: var(--text-muted); font-size: 1.1rem; }
+
+    main { flex: 1; }
+
+    .controls-container {
+      max-width: 1200px;
+      margin: 20px auto 40px;
+      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .search-box input {
+      width: 100%;
+      max-width: 500px;
+      padding: 12px 20px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      color: var(--text);
+      outline: none;
+    }
+
+    .categories { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+
+    .cat-btn {
+      background: var(--card-bg);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 8px 18px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .cat-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    .container { max-width: 1200px; margin: 0 auto 60px; padding: 0 20px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px; }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card-img-wrapper { background: #111; padding: 20px; text-align: center; }
+    .card img { width: 100%; height: 180px; object-fit: contain; }
+    .card-content { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .price { font-size: 1.2rem; font-weight: 800; color: var(--accent); margin-bottom: 10px; }
+
+    .size-btn {
+      background: #111;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 4px 8px;
+      font-size: 0.8rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .size-btn.selected { border-color: var(--accent); background: var(--accent); color: #fff; }
+
+    .add-to-cart-btn {
+      width: 100%;
+      background: var(--primary);
+      border: 1px solid var(--accent);
+      color: #fff;
+      padding: 10px 0;
+      border-radius: 6px;
+      font-weight: bold;
+      text-transform: uppercase;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    .add-to-cart-btn:hover { background: var(--accent); }
+
+    .cart-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7); display: none; z-index: 200;
+    }
+
+    .cart-sidebar {
+      position: fixed; top: 0; right: -400px; width: 100%; max-width: 400px; height: 100%;
+      background: var(--card-bg); z-index: 201; display: flex; flex-direction: column;
+      transition: right 0.3s ease;
+    }
+
+    .cart-sidebar.open { right: 0; }
+    .cart-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; }
+    .cart-items { flex-grow: 1; overflow-y: auto; padding: 20px; }
+    .cart-footer { padding: 20px; border-top: 1px solid var(--border); background: #111; }
+
+    /* PAYMENT SECTION STYLES */
+    .payment-section {
+      background: #141414;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .payment-section h2 { font-size: 1.8rem; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 20px; color: #fff; }
+    .payment-content { max-width: 800px; margin: 0 auto; font-size: 0.95rem; color: var(--text-muted); line-height: 1.7; }
+    .payment-subheading { font-weight: 800; color: #fff; text-transform: uppercase; margin-top: 20px; margin-bottom: 8px; letter-spacing: 1px; }
+
+    .payment-logos {
+      display: flex; justify-content: center; align-items: center; gap: 20px;
+      flex-wrap: wrap; margin-top: 30px; padding-top: 20px; border-top: 1px dashed var(--border);
+    }
+
+    .payment-badge {
+      background: #ffffff; padding: 8px 16px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; min-width: 110px; height: 50px;
+    }
+
+    .payment-badge img { max-height: 30px; width: auto; object-fit: contain; }
+
+    footer {
+      text-align: center; padding: 30px; background-color: var(--primary);
+      color: var(--text-muted); border-top: 1px solid var(--border); font-size: 0.9rem; margin-top: auto;
+    }
+    .footer-links { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
+    .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; }
+    .footer-links a:hover { color: var(--accent); }
+  </style>
 </head>
 <body>
 
-    <!-- HEADER NAVIGATION -->
-    <header>
-        <a href="#" class="logo">Kicks<span>Vault</span></a>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#shop">Shop</a></li>
-                <li><a href="#about">About Us</a></li>
-            </ul>
-        </nav>
-        <div class="header-actions">
-            <button class="cart-btn" id="openCart">
-                Cart <span class="cart-badge" id="cartCount">0</span>
-            </button>
-        </div>
-    </header>
+  <nav>
+    <div class="logo">Kicks<span>Vault</span></div>
+    <ul>
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="founder.html">Founder</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="support.html">Support</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
+    </ul>
+    <button class="cart-btn-nav" onclick="toggleCart()">
+      🛒 Cart <span class="cart-badge" id="cart-count">0</span>
+    </button>
+  </nav>
 
-    <!-- HERO SECTION -->
-    <section class="hero" id="home">
-        <h1>Featured Streetwear Drops</h1>
-        <p>Your ultimate destination for authentic, high-demand sneakers and exclusive urban apparel in South Africa.</p>
-        <a href="#shop" class="cta-btn">Shop Collection</a>
-    </section>
+  <header>
+    <h1>KicksVault</h1>
+    <p>Exclusive Air Jordans & Streetwear Delivered Across South Africa</p>
+  </header>
 
-    <!-- FILTER & SEARCH BAR -->
-    <div class="controls-section">
-        <input type="text" id="searchInput" class="search-input" placeholder="Search sneakers (e.g., Jordan, Dunk)...">
-        <div class="filters-group">
-            <select id="brandFilter" class="filter-select">
-                <option value="all">All Brands</option>
-                <option value="Nike">Nike</option>
-                <option value="Jordan">Jordan</option>
-                <option value="Yeezy">Yeezy</option>
-            </select>
-            <select id="sizeFilter" class="filter-select">
-                <option value="all">All Sizes</option>
-                <option value="UK 7">UK 7</option>
-                <option value="UK 8">UK 8</option>
-                <option value="UK 9">UK 9</option>
-                <option value="UK 10">UK 10</option>
-            </select>
-        </div>
+  <main>
+    <div class="controls-container">
+      <div class="search-box">
+        <input type="text" id="search-input" placeholder="Search sneakers..." oninput="filterProducts()">
+      </div>
+      <div class="categories">
+        <button class="cat-btn active" onclick="setCategory('all', this)">All</button>
+        <button class="cat-btn" onclick="setCategory('jordan', this)">Air Jordan</button>
+        <button class="cat-btn" onclick="setCategory('airforce', this)">Air Force</button>
+        <button class="cat-btn" onclick="setCategory('shox', this)">Shox</button>
+      </div>
     </div>
 
-    <!-- PRODUCT CATALOG GRID -->
-    <section class="catalog-section" id="shop">
-        <h2 class="section-title">Latest Releases</h2>
-        <div class="product-grid" id="productGrid">
-            <!-- Dynamically populated via JS -->
-        </div>
-    </section>
-
-    <!-- SHOPPING CART MODAL -->
-    <div class="modal" id="cartModal">
-        <div class="modal-content">
-            <span class="close-btn" id="closeCart">&times;</span>
-            <h2>Your Shopping Cart</h2>
-            <div class="cart-items" id="cartItems">
-                <p style="color: var(--text-grey);">Your cart is currently empty.</p>
-            </div>
-            <div class="cart-total" id="cartTotal">Total: R0.00</div>
-            <button class="checkout-btn" onclick="alert('Proceeding to PayFast simulated payment gateway...')">Checkout</button>
-        </div>
+    <div class="container">
+      <div class="grid" id="product-grid"></div>
     </div>
+  </main>
 
-    <!-- FOOTER -->
-    <footer>
-        <div class="footer-grid">
-            <div class="footer-col">
-                <h4>KicksVault</h4>
-                <p style="color: var(--text-grey); font-size: 0.9rem;">Authentic urban sneakers and streetwear delivered nationwide.</p>
-            </div>
-            <div class="footer-col">
-                <h4>Quick Links</h4>
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#shop">Shop Catalog</a></li>
-                    <li><a href="#">Terms & Conditions</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Customer Support</h4>
-                <ul>
-                    <li><a href="#">Track Order</a></li>
-                    <li><a href="#">Size Guide</a></li>
-                    <li><a href="#">Returns & Exchanges</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="copyright">
-            Copyright &copy; 2026 KicksVault Retailers. Built for WEDE5020 ICE Task 2.
-        </div>
-    </footer>
+  <div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+  <div class="cart-sidebar" id="cart-sidebar">
+    <div class="cart-header">
+      <h3>Your Cart</h3>
+      <button style="background:none; border:none; color:#fff; font-size:1.5rem; cursor:pointer;" onclick="toggleCart()">&times;</button>
+    </div>
+    <div class="cart-items" id="cart-items"></div>
+    <div class="cart-footer">
+      <div style="display:flex; justify-content:space-between; font-weight:bold; margin-bottom:15px;">
+        <span>Total:</span>
+        <span id="cart-total-price">R 0.00</span>
+      </div>
+      <button style="width:100%; background:var(--accent); color:#fff; border:none; padding:12px; font-weight:bold; cursor:pointer;" onclick="alert('Proceeding to checkout...')">Checkout</button>
+    </div>
+  </div>
 
-    <!-- Link to external JavaScript file -->
-    <script src="script.js"></script>
+  <!-- PAYMENT METHODS & SECURITY SECTION -->
+  <section class="payment-section">
+    <h2>Payment Methods</h2>
+    <div class="payment-content">
+      <div class="payment-subheading">Accepted Methods</div>
+      <p>
+        <strong>ONLINE:</strong> Payment may be made via Visa and MasterCard, as well as Direct Bank Transfer (EFT). Please contact us should you wish to pay via EFT.<br>
+        <strong>INSTORE:</strong> All major bank cards, SnapScan, and cash payments.
+      </p>
+
+      <div class="payment-subheading">Card Acquiring & Security</div>
+      <p>
+        Card transactions will be acquired for KicksVault via approved South African acquiring banks. All online transactions utilize Secure Socket Layer (SSL3) encryption technology to protect your data. No sensitive card details are stored directly on our servers.
+      </p>
+
+      <div class="payment-logos">
+        <div class="payment-badge"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa Logo"></div>
+        <div class="payment-badge"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Verified_by_Visa_logo.svg" alt="Verified by Visa"></div>
+        <div class="payment-badge"><img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="MasterCard Logo"></div>
+        <div class="payment-badge"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b7/MasterCard_Logo.svg" alt="MasterCard SecureCode"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="index.html">Home</a> |
+      <a href="about.html">About Us</a> |
+      <a href="founder.html">Founder</a> |
+      <a href="blog.html">Blog</a> |
+      <a href="support.html">Support</a> |
+      <a href="contact.html">Contact Us</a>
+    </div>
+    <p>&copy; 2026 KicksVault Retailers. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const products = [
+      { id: 1, name: "Nike Air Force 1 '07", category: "airforce", price: 2199, image: "images/af1.jpg" },
+      { id: 2, name: "Air Jordan 1 High OG", category: "jordan", price: 3499, image: "images/jordan1-high.jpg" },
+      { id: 3, name: "Air Jordan 1 Mid", category: "jordan", price: 2699, image: "images/jordan1-mid.jpg" },
+      { id: 4, name: "Air Jordan 1 Retro", category: "jordan", price: 3299, image: "images/jordan1-retro.jpg" },
+      { id: 5, name: "Air Jordan 4 Retro", category: "jordan", price: 3899, image: "images/jordan4-retro.jpg" },
+      { id: 6, name: "Jordan 4 Retro 'Fear'", category: "jordan", price: 4199, image: "images/jordan4-fear.jpg" },
+      { id: 7, name: "Jordan 4 'White Thunder'", category: "jordan", price: 4299, image: "images/jordan4-white-thunder.jpg" },
+      { id: 8, name: "Nike Shox TL", category: "shox", price: 2899, image: "images/nike-shox-tl.jpg" }
+    ];
+
+    let currentCategory = 'all';
+    let selectedSizes = {};
+    let cart = [];
+
+    function renderProducts() {
+      const grid = document.getElementById('product-grid');
+      const searchInput = document.getElementById('search-input');
+      const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+      grid.innerHTML = '';
+
+      const filtered = products.filter(p => {
+        const matchesCategory = currentCategory === 'all' || p.category === currentCategory;
+        const matchesSearch = p.name.toLowerCase().includes(searchTerm);
+        return matchesCategory && matchesSearch;
+      });
+
+      filtered.forEach(product => {
+        if (!selectedSizes[product.id]) selectedSizes[product.id] = 'UK 7';
+
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="card-img-wrapper"><img src="${product.image}" alt="${product.name}"></div>
+          <div class="card-content">
+            <div>
+              <h3>${product.name}</h3>
+              <div class="price">R ${product.price.toLocaleString('en-ZA')}.00</div>
+              <div style="display:flex; gap:5px; margin-bottom:10px;">
+                ${['UK 6', 'UK 7', 'UK 8', 'UK 9'].map(size => `
+                  <button class="size-btn ${selectedSizes[product.id] === size ? 'selected' : ''}" onclick="selectSize(${product.id}, '${size}')">${size}</button>
+                `).join('')}
+              </div>
+            </div>
+            <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add To Cart</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function selectSize(id, size) { selectedSizes[id] = size; renderProducts(); }
+    function setCategory(cat, btn) {
+      currentCategory = cat;
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderProducts();
+    }
+    function filterProducts() { renderProducts(); }
+    function addToCart(id) {
+      const p = products.find(x => x.id === id);
+      cart.push({ ...p, size: selectedSizes[id] });
+      updateCart();
+      toggleCart(true);
+    }
+    function updateCart() {
+      document.getElementById('cart-count').textContent = cart.length;
+      const container = document.getElementById('cart-items');
+      container.innerHTML = cart.map(i => `<div style="padding:10px; border-bottom:1px solid #333;"><strong>${i.name}</strong> - ${i.size} - R${i.price}</div>`).join('');
+      const total = cart.reduce((acc, i) => acc + i.price, 0);
+      document.getElementById('cart-total-price').textContent = `R ${total.toLocaleString('en-ZA')}.00`;
+    }
+    function toggleCart(force) {
+      const s = document.getElementById('cart-sidebar');
+      const o = document.getElementById('cart-overlay');
+      if (force || !s.classList.contains('open')) { s.classList.add('open'); o.style.display = 'block'; }
+      else { s.classList.remove('open'); o.style.display = 'none'; }
+    }
+
+    document.addEventListener('DOMContentLoaded', renderProducts);
+  </script>
 </body>
 </html>
