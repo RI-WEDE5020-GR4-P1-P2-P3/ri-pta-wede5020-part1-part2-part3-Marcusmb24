@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Enquire about bulk orders, retail purchases, or sponsorships at KicksVault.">
+  <title>Enquiry | KicksVault</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav>
+    <div class="logo">Kicks<span>Vault</span></div>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="founder.html">Founder</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="support.html">Support</a></li>
+      <li><a href="enquiry.html" class="active">Enquiry</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
+    </ul>
+  </nav>
+  <header>
+    <h1>Make an Enquiry</h1>
+    <p>Check availability and estimated costs instantly.</p>
+  </header>
+  <main class="container">
+    <div class="card" style="max-width: 600px; margin: 0 auto;">
+      <form id="enquiry-form">
+        <div id="enquiry-result" style="display: none; background: #1a1a1a; border-left: 4px solid var(--accent); padding: 15px; margin-bottom: 20px; color: #fff;"></div>
+        
+        <label>Full Name</label>
+        <input type="text" required placeholder="Your Name">
+        
+        <label style="margin-top: 10px; display: block;">Enquiry Type</label>
+        <select id="service-type" required style="margin-bottom: 10px;">
+          <option value="retail">Single Pair Purchase (Retail)</option>
+          <option value="bulk">Bulk Order (Team/Club)</option>
+          <option value="sponsor">Sponsorship / Volunteer</option>
+        </select>
+        
+        <label style="margin-top: 10px; display: block;">Quantity Needed</label>
+        <input type="number" id="quantity" min="1" value="1" required>
+        
+        <button type="submit">Calculate & Enquire</button>
+      </form>
+    </div>
+  </main>
+  
+  <section class="payment-section">
+    <h2>Payment Methods</h2>
+    <div class="payment-content">
+      <div class="payment-subheading">Accepted Methods</div>
+      <p>
+        <strong>ONLINE:</strong> Payment may be made via Visa and MasterCard, as well as Direct Bank Transfer (EFT). Please contact us should you wish to pay via EFT.<br>
+        <strong>INSTORE:</strong> All major bank cards, SnapScan, and cash payments.
+      </p>
+      <div class="payment-subheading">Card Acquiring & Security</div>
+      <p>
+        Card transactions will be acquired for KicksVault via approved South African acquiring banks. All online transactions utilize Secure Socket Layer (SSL3) encryption technology to protect your data. No sensitive card details are stored directly on our servers.
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="index.html">Home</a> | <a href="about.html">About Us</a> | <a href="founder.html">Founder</a> | <a href="blog.html">Blog</a> | <a href="support.html">Support</a> | <a href="enquiry.html">Enquiry</a> | <a href="contact.html">Contact Us</a>
+    </div>
+    <p>&copy; 2026 KicksVault Retailers. All rights reserved.</p>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
