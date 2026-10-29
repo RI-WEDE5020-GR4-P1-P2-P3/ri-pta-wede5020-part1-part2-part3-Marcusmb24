@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="View detailed information about our premium sneakers at KicksVault.">
+  <title>Product Details | KicksVault</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <div class="logo">Kicks<span>Vault</span></div>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="founder.html">Founder</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="support.html">Support</a></li>
+      <li><a href="enquiry.html">Enquiry</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
+    </ul>
+    <div style="display: flex; gap: 10px;">
+      <button class="cart-btn-nav" style="background: #333;" onclick="toggleWishlist()">
+        ❤️ Wishlist <span class="cart-badge" id="wishlist-count">0</span>
+      </button>
+      <button class="cart-btn-nav" onclick="toggleCart()">
+        🛒 Cart <span class="cart-badge" id="cart-count">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <main class="container" style="margin-top: 50px;">
+    <div class="grid" style="grid-template-columns: 1fr 1fr; align-items: start;">
+      
+      <div class="card" style="padding: 40px; background: #111; display: flex; justify-content: center; align-items: center;">
+        <img id="product-image" src="" alt="Shoe Image" style="width: 100%; max-height: 400px; object-fit: contain;">
+      </div>
+
+      <div>
+        <a href="index.html" style="color: var(--accent); text-decoration: none; font-size: 0.9rem; font-weight: bold;">&larr; Back to Store</a>
+        <h1 id="product-name" style="font-size: 2.5rem; text-transform: uppercase; margin: 15px 0;">Loading...</h1>
+        <p style="font-size: 1.8rem; color: var(--accent); font-weight: bold; margin-bottom: 20px;" id="product-price">R 0.00</p>
+        
+        <p style="color: var(--text-muted); margin-bottom: 30px; line-height: 1.8;">
+          Premium quality basketball sneakers engineered for performance on the court and style on the streets. 100% authentic guarantee. Sourced directly from approved suppliers. Multi-point inspection completed before dispatch.
+        </p>
+
+        <h3 style="margin-bottom: 10px;">Select Size (UK)</h3>
+        <div id="size-container" style="display: flex; gap: 10px; margin-bottom: 30px;"></div>
+
+        <button id="add-to-cart-btn" class="add-to-cart-btn" style="padding: 15px; font-size: 1.1rem;">Add To Cart</button>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- CART SIDEBAR -->
+  <div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+  <div class="cart-sidebar" id="cart-sidebar">
+    <div class="cart-header">
+      <h3>Your Cart</h3>
+      <div>
+        <button style="background:none; border:none; color:var(--accent); font-size:0.8rem; cursor:pointer; text-decoration:underline; margin-right: 15px;" onclick="clearCart()">Clear Cart</button>
+        <button style="background:none; border:none; color:#fff; font-size:1.5rem; cursor:pointer;" onclick="toggleCart()">&times;</button>
+      </div>
+    </div>
+    <div class="cart-items" id="cart-items"></div>
+    <div class="cart-footer">
+      <div style="margin-bottom: 15px;">
+        <label style="font-size: 0.9rem; color: var(--text-muted);">Delivery Region:</label>
+        <select id="shipping-region" onchange="updateCart()" style="width: 100%; padding: 8px; margin-top: 5px; background: #111; color: #fff; border: 1px solid var(--border); border-radius: 4px;">
+          <option value="0">Select Region (Collection)</option>
+          <option value="100">Gauteng (R 100.00)</option>
+          <option value="150">Major Cities (R 150.00)</option>
+          <option value="200">Outlying Areas (R 200.00)</option>
+        </select>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-weight:bold; margin-bottom:5px;">
+        <span>Subtotal:</span>
+        <span id="cart-subtotal">R 0.00</span>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-weight:bold; margin-bottom:15px; color: var(--accent);">
+        <span>Total:</span>
+        <span id="cart-total-price">R 0.00</span>
+      </div>
+      <div id="cart-vat" style="font-size: 0.75rem; color: var(--text-muted); text-align: right; margin-bottom: 15px;"></div>
+      <button style="width:100%; background:var(--accent); color:#fff; border:none; padding:12px; font-weight:bold; cursor:pointer;" onclick="window.location.href='checkout.html'">Checkout</button>
+    </div>
+  </div>
+
+  <!-- WISHLIST SIDEBAR -->
+  <div class="cart-overlay" id="wishlist-overlay" onclick="toggleWishlist()"></div>
+  <div class="cart-sidebar" id="wishlist-sidebar">
+    <div class="cart-header">
+      <h3>Your Wishlist</h3>
+      <button style="background:none; border:none; color:#fff; font-size:1.5rem; cursor:pointer;" onclick="toggleWishlist()">&times;</button>
+    </div>
+    <div class="cart-items" id="wishlist-items"></div>
+  </div>
+
+  <section class="payment-section" style="margin-top: 50px;">
+    <h2>Payment Methods</h2>
+    <div class="payment-content">
+      <div class="payment-subheading">Accepted Methods</div>
+      <p>
+        <strong>ONLINE:</strong> Payment may be made via Visa and MasterCard, as well as Direct Bank Transfer (EFT). Please contact us should you wish to pay via EFT.<br>
+        <strong>INSTORE:</strong> All major bank cards, SnapScan, and cash payments.
+      </p>
+      <div class="payment-subheading">Card Acquiring & Security</div>
+      <p>
+        Card transactions will be acquired for KicksVault via approved South African acquiring banks. All online transactions utilize Secure Socket Layer (SSL3) encryption technology to protect your data. No sensitive card details are stored directly on our servers.
+      </p>
+    </div>
+  </section>
+
+  <footer style="margin-top: 0;">
+    <div class="footer-links">
+      <a href="index.html">Home</a> | <a href="about.html">About Us</a> | <a href="founder.html">Founder</a> | <a href="blog.html">Blog</a> | <a href="support.html">Support</a> | <a href="enquiry.html">Enquiry</a> | <a href="contact.html">Contact Us</a>
+    </div>
+    <p>&copy; 2026 KicksVault Retailers. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

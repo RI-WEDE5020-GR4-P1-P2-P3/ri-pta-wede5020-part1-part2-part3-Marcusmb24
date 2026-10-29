@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Shop 100% authentic Air Jordans, Nike Air Force, and Shox at KicksVault. South Africa's premier sneaker destination.">
+  <meta name="keywords" content="sneakers, Air Jordan, Nike Shox, South Africa, buy shoes online, streetwear">
+  <title>KicksVault | SA's Premier Sneaker Destination</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <div class="logo">Kicks<span>Vault</span></div>
+    <ul>
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="founder.html">Founder</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="support.html">Support</a></li>
+      <li><a href="enquiry.html">Enquiry</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
+    </ul>
+    <div style="display: flex; gap: 10px;">
+      <button class="cart-btn-nav" style="background: #333;" onclick="toggleWishlist()">
+        ❤️ Wishlist <span class="cart-badge" id="wishlist-count">0</span>
+      </button>
+      <button class="cart-btn-nav" onclick="toggleCart()">
+        🛒 Cart <span class="cart-badge" id="cart-count">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <header>
+    <h1>KicksVault</h1>
+    <p>Exclusive Air Jordans & Streetwear Delivered Across South Africa</p>
+  </header>
+
+  <main>
+    <div class="controls-container">
+      <div class="search-box">
+        <input type="text" id="search-input" placeholder="Search sneakers..." oninput="filterProducts()">
+      </div>
+      
+      <div class="categories">
+        <button class="cat-btn active" onclick="setCategory('all', this)">All</button>
+        <button class="cat-btn" onclick="setCategory('jordan', this)">Air Jordan</button>
+        <button class="cat-btn" onclick="setCategory('airforce', this)">Air Force</button>
+        <button class="cat-btn" onclick="setCategory('shox', this)">Shox</button>
+      </div>
+
+      <div style="display: flex; gap: 15px; align-items: center; margin-top: 10px; flex-wrap: wrap; justify-content: center;">
+        <select id="sort-select" onchange="filterProducts()" style="padding: 8px 15px; background: var(--card-bg); color: var(--text); border: 1px solid var(--border); border-radius: 20px; cursor: pointer;">
+            <option value="default">Sort: Featured</option>
+            <option value="low-high">Price: Low to High</option>
+            <option value="high-low">Price: High to Low</option>
+        </select>
+        <button onclick="openSizeGuide()" style="background: transparent; color: var(--accent); border: 1px solid var(--accent); padding: 8px 15px; border-radius: 20px; cursor: pointer; font-weight: bold;">📏 View Size Guide</button>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="grid" id="product-grid"></div>
+    </div>
+  </main>
+
+  <!-- CART SIDEBAR -->
+  <div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+  <div class="cart-sidebar" id="cart-sidebar">
+    <div class="cart-header">
+      <h3>Your Cart</h3>
+      <div>
+        <button style="background:none; border:none; color:var(--accent); font-size:0.8rem; cursor:pointer; text-decoration:underline; margin-right: 15px;" onclick="clearCart()">Clear Cart</button>
+        <button style="background:none; border:none; color:#fff; font-size:1.5rem; cursor:pointer;" onclick="toggleCart()">&times;</button>
+      </div>
+    </div>
+    
+    <div class="cart-items" id="cart-items"></div>
+    
+    <div class="cart-footer">
+      <div style="margin-bottom: 15px;">
+        <label style="font-size: 0.9rem; color: var(--text-muted);">Delivery Region:</label>
+        <select id="shipping-region" onchange="updateCart()" style="width: 100%; padding: 8px; margin-top: 5px; background: #111; color: #fff; border: 1px solid var(--border); border-radius: 4px;">
+          <option value="0">Select Region (Collection)</option>
+          <option value="100">Gauteng (R 100.00)</option>
+          <option value="150">Major Cities (R 150.00)</option>
+          <option value="200">Outlying Areas (R 200.00)</option>
+        </select>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-weight:bold; margin-bottom:5px;">
+        <span>Subtotal:</span>
+        <span id="cart-subtotal">R 0.00</span>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-weight:bold; margin-bottom:15px; color: var(--accent);">
+        <span>Total:</span>
+        <span id="cart-total-price">R 0.00</span>
+      </div>
+      <div id="cart-vat" style="font-size: 0.75rem; color: var(--text-muted); text-align: right; margin-bottom: 15px;"></div>
+      <button style="width:100%; background:var(--accent); color:#fff; border:none; padding:12px; font-weight:bold; cursor:pointer;" onclick="window.location.href='checkout.html'">Checkout</button>
+    </div>
+  </div>
+
+  <!-- WISHLIST SIDEBAR -->
+  <div class="cart-overlay" id="wishlist-overlay" onclick="toggleWishlist()"></div>
+  <div class="cart-sidebar" id="wishlist-sidebar">
+    <div class="cart-header">
+      <h3>Your Wishlist</h3>
+      <button style="background:none; border:none; color:#fff; font-size:1.5rem; cursor:pointer;" onclick="toggleWishlist()">&times;</button>
+    </div>
+    <div class="cart-items" id="wishlist-items"></div>
+  </div>
+
+  <!-- SIZE GUIDE MODAL -->
+  <div class="cart-overlay" id="size-guide-overlay" onclick="closeSizeGuide()"></div>
+  <div id="size-guide-modal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--card-bg); padding: 30px; border-radius: 12px; border: 1px solid var(--accent); z-index: 300; width: 90%; max-width: 500px;">
+    <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+        <h2 style="color: var(--accent);">Sneaker Size Guide</h2>
+        <button style="background:none; border:none; color:#fff; font-size:1.5rem; cursor:pointer;" onclick="closeSizeGuide()">&times;</button>
+    </div>
+    <table style="width: 100%; text-align: left; border-collapse: collapse;">
+        <tr style="border-bottom: 1px solid var(--border); color: var(--accent);">
+            <th style="padding: 10px;">UK Size</th>
+            <th style="padding: 10px;">US Size</th>
+            <th style="padding: 10px;">EU Size</th>
+            <th style="padding: 10px;">CM</th>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 10px;">6</td><td>7</td><td>40</td><td>24.5</td></tr>
+        <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 10px;">7</td><td>8</td><td>41</td><td>25.4</td></tr>
+        <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 10px;">8</td><td>9</td><td>42.5</td><td>26.2</td></tr>
+        <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 10px;">9</td><td>10</td><td>44</td><td>27.1</td></tr>
+    </table>
+    <p style="margin-top: 20px; font-size: 0.85rem; color: var(--text-muted);">Tip: If you are between sizes, we recommend going a half size up for basketball sneakers.</p>
+  </div>
+
+  <section class="payment-section">
+    <h2>Payment Methods</h2>
+    <div class="payment-content">
+      <div class="payment-subheading">Accepted Methods</div>
+      <p>
+        <strong>ONLINE:</strong> Payment may be made via Visa and MasterCard, as well as Direct Bank Transfer (EFT). Please contact us should you wish to pay via EFT.<br>
+        <strong>INSTORE:</strong> All major bank cards, SnapScan, and cash payments.
+      </p>
+      <div class="payment-subheading">Card Acquiring & Security</div>
+      <p>
+        Card transactions will be acquired for KicksVault via approved South African acquiring banks. All online transactions utilize Secure Socket Layer (SSL3) encryption technology to protect your data. No sensitive card details are stored directly on our servers.
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="index.html">Home</a> | <a href="about.html">About Us</a> | <a href="founder.html">Founder</a> | <a href="blog.html">Blog</a> | <a href="support.html">Support</a> | <a href="enquiry.html">Enquiry</a> | <a href="contact.html">Contact Us</a>
+    </div>
+    <p>&copy; 2026 KicksVault Retailers. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
