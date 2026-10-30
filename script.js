@@ -1,7 +1,7 @@
 // --- GLOBAL DOM LOAD ---
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. FAQ Accordion Logic (Updated with +/- icons)
+    // 1. FAQ Accordion Logic
     const faqItems = document.querySelectorAll('.faq-item');
     faqItems.forEach(item => {
         const answer = item.querySelector('p');
@@ -10,18 +10,16 @@ document.addEventListener('DOMContentLoaded', () => {
         item.addEventListener('click', () => {
             const isOpen = answer.style.display === 'block';
             
-            // Close all others
             document.querySelectorAll('.faq-item p').forEach(p => p.style.display = 'none');
             document.querySelectorAll('.faq-item').forEach(i => {
                 i.style.borderColor = 'var(--border)';
-                i.classList.remove('open'); // Remove the plus/minus class
+                i.classList.remove('open'); 
             });
             
-            // Open clicked one
             if (!isOpen) {
                 answer.style.display = 'block';
                 item.style.borderColor = 'var(--accent)';
-                item.classList.add('open'); // Add the plus/minus class
+                item.classList.add('open'); 
             }
         });
     });
@@ -223,6 +221,23 @@ function selectPDPsize(size) {
     document.querySelectorAll('#size-container .size-btn').forEach(btn => btn.classList.remove('selected'));
     document.getElementById('btn-' + size.replace(' ', '')).classList.add('selected');
     selectedSizes[parseInt(new URLSearchParams(window.location.search).get('id'))] = size;
+}
+
+// --- GALLERY LIGHTBOX ---
+function openLightbox(imageSrc) {
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    if (lightbox && lightboxImg) {
+        lightboxImg.src = imageSrc;
+        lightbox.style.display = 'flex';
+    }
+}
+
+function closeLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    if (lightbox) {
+        lightbox.style.display = 'none';
+    }
 }
 
 // --- CART FUNCTIONS ---
